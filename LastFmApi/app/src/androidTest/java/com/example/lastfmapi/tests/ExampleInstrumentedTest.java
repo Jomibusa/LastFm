@@ -1,4 +1,4 @@
-package com.example.lastfmapi;
+package com.example.lastfmapi.tests;
 
 import android.content.Context;
 
@@ -23,5 +23,9 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         assertEquals("com.example.lastfmapi", appContext.getPackageName());
+    }
+
+    public void testeo(){
+
     }
 }
