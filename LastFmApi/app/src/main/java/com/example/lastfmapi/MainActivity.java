@@ -45,13 +45,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void getListView(List<String> lista, List<String> imagenes) {
+    public void getListView(List<String> lista, List<String> imagenes, List<String> urls) {
         context = this;
 
         String[] stringArray = lista.toArray(new String[0]);
         String[] stringImagenes = imagenes.toArray(new String[0]);
+        String[] strinUrls = urls.toArray(new String[0]);
         listview = (ListView) findViewById(R.id.lvListado);
-        listview.setAdapter(new GestionarAdapter(this, stringArray,stringImagenes));
+        listview.setAdapter(new GestionarAdapter(this, stringArray,stringImagenes, strinUrls));
 
     }
 
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 List<Artista> listArtist = contenido.getTopartists().getArtists();
 
                 for (Artista artista : listArtist) {
-                    String content = "";
+                    String content = "\n";
                     String imagenes = "";
                     String url = "";
                     content += "Name ► " + artista.getName() + "\n";
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                     arrayListImagenes.add(imagenes);
                     arrayListUrls.add(url);
                 }
-                getListView(arrayListArtist,arrayListImagenes);
+                getListView(arrayListArtist,arrayListImagenes,arrayListUrls);
             }
 
             @Override
