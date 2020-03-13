@@ -2,22 +2,25 @@ package com.example.lastfmapi;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+
+
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.example.lastfmapi.Modelo.Artista;
-import com.example.lastfmapi.Modelo.TopArtist;
 import com.example.lastfmapi.Modelo.TopArtistResponse;
+
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Converter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -25,22 +28,35 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
     private TextView textoPrueba;
+    private ListView listview;
+    private String[] ArrayArtistas;
+    private static List<String> arrayListArtist = new ArrayList<String>();
+    private static List<String> arrayListImagenes = new ArrayList<String>();
+    private static List<String> arrayListUrls = new ArrayList<String>();
+    Context context;
 
-    ListView list;
-    ArrayList<String> name = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        textoPrueba = findViewById(R.id.texto);
         getArtistas();
 
 
     }
 
-    public void getArtistas(){
+    public void getListView(List<String> lista, List<String> imagenes) {
+        context = this;
+
+        String[] stringArray = lista.toArray(new String[0]);
+        String[] stringImagenes = imagenes.toArray(new String[0]);
+        listview = (ListView) findViewById(R.id.lvListado);
+        listview.setAdapter(new GestionarAdapter(this, stringArray,stringImagenes));
+
+    }
+
+
+    public void getArtistas() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://ws.audioscrobbler.com/2.0/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -57,20 +73,23 @@ public class MainActivity extends AppCompatActivity {
 
                 TopArtistResponse contenido = response.body();
 
-                //textoPrueba.setText(contenido.getTopartists().getArtists().toString());
-
                 List<Artista> listArtist = contenido.getTopartists().getArtists();
 
-                for(Artista artista:listArtist){
-                    String content = "Artist:\n";
-                    content += "name:"+ artista.getName() + "\n";
-                    content += "listeners:"+ artista.getListeners() + "\n";
-                    content += "mbid:"+ artista.getMbid() + "\n";
-                    content += "url:"+ artista.getUrl() + "\n";
-                    content += "stremeable:"+ artista.getStremeable()+ "\n";
-                    content += "image:" + artista.getImageUrl() + "\n\n";
-                    textoPrueba.append(content);
+                for (Artista artista : listArtist) {
+                    String content = "";
+                    String imagenes = "";
+                    String url = "";
+                    content += "Name ► " + artista.getName() + "\n";
+                    content += "Listeners ► " + artista.getListeners() + "\n";
+                    content += "MBID ► " + artista.getMbid() + "\n";
+                    url += artista.getUrl();
+                    content += "Stremeable ► " + artista.getStremeable() + "\n";
+                    imagenes += artista.getImageUrl();
+                    arrayListArtist.add(content);
+                    arrayListImagenes.add(imagenes);
+                    arrayListUrls.add(url);
                 }
+                getListView(arrayListArtist,arrayListImagenes);
             }
 
             @Override
@@ -78,5 +97,6 @@ public class MainActivity extends AppCompatActivity {
                 textoPrueba.setText(t.getMessage());
             }
         });
+
     }
 }

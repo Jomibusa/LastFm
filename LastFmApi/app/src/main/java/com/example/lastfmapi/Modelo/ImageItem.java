@@ -2,10 +2,6 @@ package com.example.lastfmapi.Modelo;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by Bassem Samy on 6/16/2017.
- */
-
 public class ImageItem {
     @SerializedName("#text")
     private String url;

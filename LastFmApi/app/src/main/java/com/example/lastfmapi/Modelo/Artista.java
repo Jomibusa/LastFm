@@ -16,7 +16,7 @@ public class Artista {
     private String url;
     @SerializedName("streamable")
     private int stremeable;
-    @SerializedName("images")
+    @SerializedName("image")
     private List<ImageItem> images;
 
     public String getName() {
